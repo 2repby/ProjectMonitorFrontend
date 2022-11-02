@@ -18,7 +18,7 @@
       <template #footer>
         <Button icon="pi pi-chart-line" label="Метрики" class="p-button-outlined" @click="viewMetricsDialog(item.name,index)"/>
         <Button icon="pi pi-pencil" label="Ввод данных" class="p-button-outlined" style="margin-left: .5em"/>
-        <Button icon="pi pi-file-export" label="Отчет" class="p-button-success p-button-outlined" style="margin-left: .5em" />
+        <Button icon="pi pi-file-export" label="Отчет" class="p-button-success p-button-outlined" style="margin-left: .5em" @click="viewProjectReport(index)"/>
       </template>
     </Card>
   </div>
@@ -30,6 +30,7 @@ import ProjectService from '../services/projects';
 import Card from 'primevue/card';
 import Button from "primevue/button";
 import Metrics from "@/components/Metrics";
+import router from "@/router";
 
 export default {
   name: "Projects-data",
@@ -54,10 +55,13 @@ export default {
   methods: {
 
       viewMetricsDialog(name, id) {
-      this.metricsDialogVisible = !this.metricsDialogVisible;
-      this.projectName = name;
-      this.currentProjectID = id;
-      console.log(name, id)
+        this.metricsDialogVisible = !this.metricsDialogVisible;
+        this.projectName = name;
+        this.currentProjectID = id;
+        console.log(name, id)
+       },
+    viewProjectReport(id) {
+      router.push('/projectreport/' + id)
     },
   },
 }
