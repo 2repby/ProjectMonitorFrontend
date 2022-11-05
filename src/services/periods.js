@@ -1,5 +1,5 @@
 const backendUrl = process.env.VUE_APP_BACKEND_URL;
-// import store from '../state.js'
+import store from '../state.js'
 export default {
     getPeriods() {
         console.log('Requesting periods...')
@@ -21,13 +21,13 @@ export default {
                     console.log(error.response.status);
                     console.log(error.response.headers);
                     // context.commit('setWrongPassword', false)
-                    this.store.context.commit('setNetworkError', true)
+                    store.commit('setNetworkError', true)
                 } else if (error.request) {
                     // The request was made but no response was received
                     // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
                     // http.ClientRequest in node.js
                     console.log(error.request);
-                    this.store.context.commit('setNetworkError', true)
+                    store.commit('setNetworkError', true)
 
                 } else {
                     // Something happened in setting up the request that triggered an Error

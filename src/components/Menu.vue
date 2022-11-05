@@ -19,6 +19,7 @@
 <script>
 import Menubar from 'primevue/menubar';
 import SignIn from "@/components/Signin";
+import router from "@/router";
 
 export default {
   name: "MenuBar",
@@ -27,8 +28,11 @@ export default {
     return {
       items: [
         {
-          label:'Проект',
+          label:'Проекты',
           icon:'pi pi-fw pi-briefcase big',
+          command: () => {
+            router.push('/projects')
+          },
           items:[
             {
               label:'Создать',
@@ -43,16 +47,12 @@ export default {
           ]
         },
         {
-          label:'Показатели',
+          label:'Данные',
           icon:'pi pi-fw pi-chart-line',
           items:[
             {
-              label:'Создать',
-              icon:'pi pi-fw pi-align-left'
-            },
-            {
-              label:'График',
-              icon:'pi pi-fw pi-align-right'
+              label:'Добавить',
+              icon:'pi pi-fw pi-plus big'
             },
 
           ]

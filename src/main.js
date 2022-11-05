@@ -9,10 +9,12 @@ import router from './router.js'
 import App from './App.vue'
 import PrimeVue from 'primevue/config';
 import 'primevue/resources/themes/bootstrap4-light-blue/theme.css';
-import 'primeicons/primeicons.css';
-import ToastService from 'primevue/toastservice';
-// import 'primeflex/primeflex.css';
 import 'primevue/resources/primevue.min.css'
+import 'primeicons/primeicons.css';
+import 'primeflex/primeflex.css';
+import ToastService from 'primevue/toastservice';
+
+
 import store from './state.js';
 
 const myApp = createApp(App);
@@ -21,4 +23,5 @@ myApp.use(store)
 myApp.use(router)
 myApp.use(PrimeVue)
 myApp.use(ToastService);
+myApp.use(PrimeVue, { ripple: true })
 myApp.mount('#app');

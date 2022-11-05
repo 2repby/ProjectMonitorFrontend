@@ -36,9 +36,6 @@ export default {
       if (wrongPassword)  this.$toast.add({severity:'error', summary: 'Ошибка аутентификации', detail:'Неверный логин или пароль', life: 4000});
 
     },
-    network_error: function (networkError){
-      if (networkError)  this.$toast.add({severity:'error', summary: 'Сервер не отвечает', detail:'Отсуствует сетевое соединение или сервер недоступен', life: 4000});
-    },
     logged_in: function (loggedIn){
       if (loggedIn)  this.$toast.add({severity:'success', summary: 'Успешная аутентификация', detail:'Вы успешно вошии в сиситему', life: 4000});
       if (!loggedIn)  this.$toast.add({severity:'success', summary: 'Выход из системы', detail:'Вы успешно вышли из системы', life: 4000});
@@ -84,11 +81,6 @@ export default {
       function () {
         return this.$store.state.wrongPassword
       },
-    network_error:
-        function () {
-          return this.$store.state.networkError
-        }
-
   },
   methods: {
     login(){

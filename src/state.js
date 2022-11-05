@@ -10,7 +10,8 @@ const client_secret = process.env.VUE_APP_CLIENT_SECRET;
 const  store = createStore({
     state: {
         user: {},
-        projects: {},
+        // projects: {},
+
         token: null,
         preLoading: false,
         wrongPassword: false,
@@ -96,9 +97,6 @@ const  store = createStore({
                         console.log('Error', error.message);
                     }
                     console.log(error.config);
-
-
-
                 })
         },
 
@@ -116,8 +114,26 @@ const  store = createStore({
                 }
             )
                 .catch((error) => {
-                    console.log(error.toString())
+                    if (error.response) {
+                        // The request was made and the server responded with a status code
+                        // that falls out of the range of 2xx
+                        console.log(error.response.data);
+                        console.log(error.response.status);
+                        console.log(error.response.headers);
+                        // context.commit('setWrongPassword', false)
+                        context.commit('setWrongPassword', true)
+                    } else if (error.request) {
+                        // The request was made but no response was received
+                        // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+                        // http.ClientRequest in node.js
+                        console.log(error.request);
+                        context.commit('setNetworkError', true)
 
+                    } else {
+                        // Something happened in setting up the request that triggered an Error
+                        console.log('Error', error.message);
+                    }
+                    console.log(error.config);
                 })
         },
         getUser(context){
