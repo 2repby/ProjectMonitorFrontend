@@ -1,6 +1,7 @@
 <template>
   <div id="app">
-    <Menu></Menu>
+<!--    <Menu></Menu>-->
+    <SignIn></SignIn>
     <router-view></router-view>
     <Toast position="bottom-right"/>
   </div>
@@ -10,14 +11,15 @@
 
 import store from "./state";
 
-import Menu from "@/components/Menu";
+// import Menu from "@/components/Menu";
 import Toast from "primevue/toast";
+import SignIn from "@/components/Signin";
 // import MainMenu from "@/components/MainMenu";
 // import router from "@/router";
 
 
 export default {
-  components: {Menu, Toast},
+  components: {SignIn, Toast},
   data() {
     return {
       question: '',
@@ -47,14 +49,15 @@ export default {
   mounted() {
     const token = localStorage.getItem('token');
     if (token) {
-      console.log('Token in local storage')
+      console.log('The token in the local storage')
 
       store.commit('setToken', token);
       store.dispatch('getUser');
-      // store.commit('setLoggedIn', true);
+
     }
-
-
+    store.dispatch('getPeriods');
+    store.dispatch('getAreas');
+    store.dispatch('getProjects');
   }
 }
 </script>
