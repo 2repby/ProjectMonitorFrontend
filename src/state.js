@@ -15,6 +15,7 @@ const  store = createStore({
         areas: [],
         userAreas: [],
         projects: [],
+        users: [],
         token: null,
         preLoading: false,
         wrongPassword: false,
@@ -78,6 +79,10 @@ const  store = createStore({
         setProjects(context, data){
             context.projects = data
             console.log('projects IN THE STORE');
+        },
+        setUsers(context, data){
+            context.users = data
+            console.log('users IN THE STORE');
         },
 
 
@@ -191,7 +196,13 @@ const  store = createStore({
         getRequest(context, url) {
             console.log('getRequest DISPATCHED');
             context.commit('setNetworkError', false)
-            return window.axios.get(backendUrl + url,
+            const config = {
+                headers: {
+                    "Authorization": "Bearer " + store.state.token,
+                    "Content-Type": "multipart/form-data"
+                }
+            };
+            return window.axios.get(backendUrl + url, config
             ).then(response => {
                 console.log(response.data)
                 return response.data
@@ -303,6 +314,13 @@ const  store = createStore({
             context.dispatch('getRequest','/projectswith/metrics/').then(data =>{
                 store.commit('setProjects',data);
                 console.log('getProjects DISPATCHED');
+            })
+        },
+        getUsers(context)
+        {
+            context.dispatch('getRequest','/users/').then(data =>{
+                store.commit('setUsers',data);
+                console.log('getUsers DISPATCHED');
             })
         },
         storeMetricValue(context, parameters)

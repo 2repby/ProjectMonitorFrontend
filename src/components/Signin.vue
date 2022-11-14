@@ -1,31 +1,31 @@
 <template>
 
-  <div class="flex align-items-center">
+  <div class="align-items-center flex flex-column md:flex-row ">
 
-    <div class="flex align-items-center m-2">
+    <div class="align-items-center m-2           flex flex-column md:flex-row ">
       <div class="flex" >
-        <img alt="logo" class="mr-2" height="60" src="../assets/yugra.png">
+        <img alt="logo" class="m-2 " height="60" src="../assets/yugra.png ">
       </div>
-      <div class="flex mr-2">
-        <Button class="p-button-raised p-button-success" icon="pi pi-briefcase" iconPos="left" label="Проекты" @click="goLink('/projects')"/>
+      <div class="flex m-2 md:flex-row">
+        <Button class="p-button-raised p-button-success md:flex-row" icon="pi pi-briefcase" iconPos="left" label="Проекты" @click="goLink('/projects')"/>
       </div>
-      <div class="flex mr-2">
-        <Button class="p-button-raised p-button-success" icon="pi pi-users" iconPos="left" label="Пользователи"/>
+      <div class="flex m-2">
+        <Button class="p-button-raised p-button-success" icon="pi pi-users" iconPos="left" label="Пользователи" @click="goLink('/users')"/>
       </div>
-      <div class="flex mr-2">
+      <div class="flex m-2">
         <Button class="p-button-raised p-button-success" icon="pi pi-info-circle" iconPos="left" label="О проекте"/>
       </div>
     </div>
 
-    <div>
-      <div v-if="logged_in">
+    <div class="flex align-items-center " >
+      <div v-if="logged_in" class="m-2">
         <SplitButton :model="items" class="p-button-raised" icon="pi pi-user" v-bind:label="email"></SplitButton>
       </div>
 
-      <div v-else >
-        <InputText v-model="email" v-bind:class="{'p-invalid': wrong_password}"/>
-        <Password v-model="password" :feedback="false" v-bind:class="{'p-invalid': wrong_password}"/>
-        <Button class="p-button-raised " @click="login">Войти</Button>
+      <div v-else class="flex flex-column md:flex-row ">
+        <InputText class="m-2" v-model="email" v-bind:class="{'p-invalid': wrong_password}"/>
+        <Password class="m-2" v-model="password" :feedback="false" v-bind:class="{'p-invalid': wrong_password}"/>
+        <Button class="p-button-raised m-2" @click="login">Войти</Button>
       </div>
     </div>
 
@@ -130,5 +130,6 @@ export default {
 </script>
 
 <style scoped>
+
 
 </style>

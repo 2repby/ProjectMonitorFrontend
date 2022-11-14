@@ -52,7 +52,7 @@ export default {
   computed:
   {
     areas() {
-      console.log('periods COMPUTED')
+      console.log('areas COMPUTED')
       return store.state.areas;
     },
     periods() {

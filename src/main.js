@@ -13,6 +13,8 @@ import 'primevue/resources/primevue.min.css'
 import 'primeicons/primeicons.css';
 import 'primeflex/primeflex.css';
 import ToastService from 'primevue/toastservice';
+import '@vuelidate/core'
+import '@vuelidate/validators'
 
 
 import store from './state.js';
