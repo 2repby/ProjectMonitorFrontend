@@ -15,6 +15,7 @@ import 'primeflex/primeflex.css';
 import ToastService from 'primevue/toastservice';
 import '@vuelidate/core'
 import '@vuelidate/validators'
+import ConfirmationService from 'primevue/confirmationservice';
 
 
 import store from './state.js';
@@ -26,4 +27,5 @@ myApp.use(router)
 myApp.use(PrimeVue)
 myApp.use(ToastService);
 myApp.use(PrimeVue, { ripple: true })
+myApp.use(ConfirmationService);
 myApp.mount('#app');

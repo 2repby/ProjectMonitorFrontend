@@ -2,7 +2,7 @@
   <div id="app">
 <!--    <Menu></Menu>-->
     <SignIn></SignIn>
-    <router-view></router-view>
+    <router-view :key="$route.fullPath"></router-view>
     <Toast position="bottom-right"/>
   </div>
 
