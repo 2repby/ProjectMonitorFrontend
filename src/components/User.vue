@@ -150,6 +150,12 @@ export default {
   watch: {
     dialogVisible: function () {
       this.DV = true;
+      console.log('this.user_action= ', this.user_action);
+      this.resetForm();
+      if (this.user_action == "edit"){
+        this.loadUser();
+      }
+
     },
   },
   methods: {
@@ -170,6 +176,21 @@ export default {
 
 
     },
+
+    loadUser(){
+      console.log('this.user= ', this.user);
+      this.lastname = this.user.lastname;
+      this.firstname = this.user.firstname;
+      this.surname = this.user.surname;
+      this.email = this.user.email;
+      this.password = this.user.password;
+      this.phone = this.user.phone;
+      this.selectedAreas = this.user.areas.map(e => {
+            return {name: e.name, value: e.id}});
+      // this.selectedAreas = [1, 2, 3, 4]
+          console.log('this.selectedAreas= ',  this.selectedAreas);
+    },
+
     async saveUser() {
       const isFormCorrect = await this.v$.$validate()
       // you can show some extra alert to the user or just leave the each field to show it's `$errors`.
@@ -202,39 +223,42 @@ export default {
           });
         else {
           this.$toast.add({severity: 'success', summary: 'Пользователь добавлен', detail: data, life: 4000});
-          const bodyParameters = {
-            "id_areas": this.selectedAreas.map(e => {return e.value}).join(','),
-          };
-          store.dispatch('storeUserAreas', [data.user.id, bodyParameters] ).then(data => {
-            console.log('DATA^ ', data)
-            if (!isEmpty(data.code))
-              this.$toast.add({
-                severity: 'error',
-                summary: 'Ошибка добавления городов/районов пользователю',
-                detail: data.message,
-                life: 4000
-              });
-            else if (!isEmpty(data.data))
-              this.$toast.add({
-                severity: 'error',
-                summary: 'Ошибка добавления городов/районов пользователю',
-                detail: {...data.data.errors, error: data.data.message},
-                life: 4000
-              });
-            else{
-              this.$toast.add({
-                severity: 'success',
-                summary: 'Города/районы добавлены уполномоченному пользователю',
-                detail: data,
-                life: 4000
-              });
-              this.resetForm();
-              this.v$.$reset();
-              this.closeDialog();
-              store.dispatch('getUsers');
-            }
+          if (!isEmpty(this.selectedAreas)){
+            const bodyParameters = {
+              "id_areas": this.selectedAreas.map(e => {return e.value}).join(','),
+            };
+            store.dispatch('storeUserAreas', [data.user.id, bodyParameters] ).then(data => {
+              console.log('DATA^ ', data)
+              if (!isEmpty(data.code))
+                this.$toast.add({
+                  severity: 'error',
+                  summary: 'Ошибка добавления городов/районов пользователю',
+                  detail: data.message,
+                  life: 4000
+                });
+              else if (!isEmpty(data.data))
+                this.$toast.add({
+                  severity: 'error',
+                  summary: 'Ошибка добавления городов/районов пользователю',
+                  detail: {...data.data.errors, error: data.data.message},
+                  life: 4000
+                });
+              else{
+                this.$toast.add({
+                  severity: 'success',
+                  summary: 'Города/районы добавлены уполномоченному пользователю',
+                  detail: data,
+                  life: 4000
+                });
 
-          })
+              }
+
+            })
+          }
+          this.resetForm();
+          this.v$.$reset();
+          this.closeDialog();
+          store.dispatch('getUsers');
 
         }
 

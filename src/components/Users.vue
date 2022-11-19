@@ -22,11 +22,10 @@
           {{ data.is_admin == 1 ? 'Да' : 'Нет' }}
         </template>
       </Column>
-      <Column field="areas" header="Уполномочен"></Column>
+      <Column field="areas_list" header="Уполномочен"></Column>
       <Column style="min-width:8rem" header="Действия">
         <template #body="{data}">
-          <Button class="p-button-rounded p-button-success mr-2" icon="pi pi-pencil"
-                  @click="editProduct(slotProps.data)"/>
+          <Button class="p-button-rounded p-button-success mr-2" icon="pi pi-pencil" @click="editUser(data)"/>
           <Button class="p-button-rounded p-button-danger" icon="pi pi-trash" @click="deleteUser($event,data )"/>
         </template>
       </Column>
@@ -58,8 +57,9 @@ export default {
     return {
       userDialogVisible: false,
       user_action: '',
-      current_user: [],
+      current_user: {},
       // confirm: useConfirm(),
+
     }
   },
   mounted() {
@@ -71,7 +71,7 @@ export default {
         function () {
           return this.$store.state.users.map(e => {
             return {
-              ...e, areas: e.areas.map(a => {
+              ...e, areas_list: e.areas.map(a => {
                 return a.name
               }).join(', ')
             }
@@ -79,6 +79,13 @@ export default {
         },
   },
   methods: {
+    editUser(user){
+      this.userDialogVisible = !this.userDialogVisible;
+      this.user_action = 'edit';
+      this.current_user = user;
+      console.log('current_user=');
+      console.log(JSON.stringify(this.current_user, null, 2));
+    },
     viewUserDialog(name, id) {
       this.userDialogVisible = !this.userDialogVisible;
       this.user_action = 'create';
@@ -134,6 +141,7 @@ export default {
 
       });
     },
+
   }
 }
 </script>

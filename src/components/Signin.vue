@@ -1,39 +1,48 @@
 <template>
-
-  <div class="align-items-center flex flex-column md:flex-row ">
-
-    <div class="align-items-center m-2           flex flex-column md:flex-row ">
-      <div class="flex" >
-        <img alt="logo" class="m-2 " height="60" src="../assets/yugra.png ">
+  <Toolbar>
+    <template #start>
+      <div class="align-items-center flex flex-column md:flex-row">
+        <div class="flex">
+          <img alt="logo" height="60" src="../assets/yugra.png ">
+        </div>
+        <div class="flex m-2 md:flex-row">
+          <Button class="p-button-raised p-button-success md:flex-row" icon="pi pi-briefcase" iconPos="left"
+                  label="Проекты" @click="goLink('/projects')"/>
+        </div>
+        <div class="flex m-2">
+          <Button class="p-button-raised p-button-success" icon="pi pi-users" iconPos="left" label="Пользователи"
+                  @click="goLink('/users')"/>
+        </div>
+        <div class="flex m-2">
+          <Button class="p-button-raised p-button-success" icon="pi pi-info-circle" iconPos="left" label="О проекте"/>
+        </div>
       </div>
-      <div class="flex m-2 md:flex-row">
-        <Button class="p-button-raised p-button-success md:flex-row" icon="pi pi-briefcase" iconPos="left" label="Проекты" @click="goLink('/projects')"/>
-      </div>
-      <div class="flex m-2">
-        <Button class="p-button-raised p-button-success" icon="pi pi-users" iconPos="left" label="Пользователи" @click="goLink('/users')"/>
-      </div>
-      <div class="flex m-2">
-        <Button class="p-button-raised p-button-success" icon="pi pi-info-circle" iconPos="left" label="О проекте"/>
-      </div>
-    </div>
+    </template>
 
-    <div class="flex align-items-center " >
-      <div v-if="logged_in" class="m-2">
-        <SplitButton :model="items" class="p-button-raised" icon="pi pi-user" v-bind:label="email"></SplitButton>
+    <template #end>
+      <div class="flex align-items-center ">
+        <div v-if="logged_in" class="m-2">
+          <SplitButton :model="items" class="p-button-raised" icon="pi pi-user" v-bind:label="email"></SplitButton>
+        </div>
+
+        <div v-else class="flex flex-column md:flex-row ">
+          <InputText v-model="email" class="m-2" v-bind:class="{'p-invalid': wrong_password}"/>
+          <Password v-model="password" :feedback="false" class="m-2" v-bind:class="{'p-invalid': wrong_password}"/>
+          <Button class="p-button-raised m-2" @click="login">Войти</Button>
+        </div>
       </div>
-
-      <div v-else class="flex flex-column md:flex-row ">
-        <InputText class="m-2" v-model="email" v-bind:class="{'p-invalid': wrong_password}"/>
-        <Password class="m-2" v-model="password" :feedback="false" v-bind:class="{'p-invalid': wrong_password}"/>
-        <Button class="p-button-raised m-2" @click="login">Войти</Button>
-      </div>
-    </div>
-
-  </div>
-
+    </template>
+  </Toolbar>
   <Toast position="bottom-right"/>
 
 </template>
+
+
+<!--  <div class="align-items-center flex flex-column md:flex-row ">-->
+
+
+<!--  </div>-->
+
 
 <script>
 
@@ -44,11 +53,12 @@ import Button from 'primevue/button';
 import Password from 'primevue/password';
 import SplitButton from 'primevue/splitbutton';
 import Toast from 'primevue/toast';
+import Toolbar from "primevue/toolbar";
 
 
 export default {
   name: "SignIn",
-  components: {InputText, Button, Password, SplitButton, Toast},
+  components: {InputText, Button, Password, SplitButton, Toast, Toolbar},
   watch: {
     wrong_password: function (wrongPassword) {
       if (wrongPassword) this.$toast.add({
@@ -122,7 +132,7 @@ export default {
     logout() {
       this.$store.dispatch('logout');
     },
-    goLink(link){
+    goLink(link) {
       this.$router.push(link)
     }
   },
