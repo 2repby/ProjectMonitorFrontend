@@ -94,9 +94,10 @@ export default {
               label: this.areas.filter(element => element.id == c)[0].name,
               icon: "pi pi-fw pi-map-marker",
               children:
-                  this.metric_values.metrics[x].metric_values.filter(element => element.area_id == c).map((y, key2) => ({
+                  this.metric_values.metrics[x].metric_values.filter(element => element.area_id == c).sort((a,b) => {if (a.period_id < b.period_id) {
+                    return -1;}} ).map((y, key2) => ({
                     key: x + '-' + key + '-' + key2,
-                    label: this.periods.filter(e => e.id == y.period_id)[0].name+':  '+y.value,
+                    label: this.periods.filter(e => e.id == y.period_id)[0].name+':  '+Number(y.value * 100).toFixed(2)+' %',
                     icon: "pi pi-fw pi-calendar",
                   })),
             })),

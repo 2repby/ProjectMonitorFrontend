@@ -145,6 +145,7 @@ const  store = createStore({
             }).then(() => {
                     context.commit('setToken', null);
                     context.commit('setLoggedIn',false);
+                    context.commit('setUser', null);
                     localStorage.removeItem('token');
                 }
             )
@@ -379,6 +380,15 @@ const  store = createStore({
         {
             return context.dispatch('postRequest',['/user/',parameters]).then(data =>{
                 console.log('parameters',);
+                console.log('storeUser DISPATCHED',);
+                console.log('RESPONSE:', data);
+                return data;
+            })
+        },
+        updateUser(context, parameters)
+        {
+            return context.dispatch('postRequest',['/user/'+parameters[0],parameters[1]]).then(data =>{
+                console.log('parameters',parameters);
                 console.log('storeUser DISPATCHED',);
                 console.log('RESPONSE:', data);
                 return data;

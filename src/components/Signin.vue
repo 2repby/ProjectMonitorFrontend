@@ -2,19 +2,21 @@
   <Toolbar>
     <template #start>
       <div class="align-items-center flex flex-column md:flex-row">
+        <a href="/">
         <div class="flex">
           <img alt="logo" height="60" src="../assets/yugra.png ">
         </div>
+        </a>
         <div class="flex m-2 md:flex-row">
           <Button class="p-button-raised p-button-success md:flex-row" icon="pi pi-briefcase" iconPos="left"
                   label="Проекты" @click="goLink('/projects')"/>
         </div>
-        <div class="flex m-2">
+        <div class="flex m-2" v-if="is_admin">
           <Button class="p-button-raised p-button-success" icon="pi pi-users" iconPos="left" label="Пользователи"
                   @click="goLink('/users')"/>
         </div>
         <div class="flex m-2">
-          <Button class="p-button-raised p-button-success" icon="pi pi-info-circle" iconPos="left" label="О проекте"/>
+          <Button class="p-button-raised p-button-success" icon="pi pi-info-circle" iconPos="left" label="Документация"/>
         </div>
       </div>
     </template>
@@ -22,7 +24,7 @@
     <template #end>
       <div class="flex align-items-center ">
         <div v-if="logged_in" class="m-2">
-          <SplitButton :model="items" class="p-button-raised" icon="pi pi-user" v-bind:label="email"></SplitButton>
+          <SplitButton :model="items" class="p-button-raised" icon="pi pi-user" :label=this.login_as></SplitButton>
         </div>
 
         <div v-else class="flex flex-column md:flex-row ">
@@ -87,8 +89,8 @@ export default {
   data() {
     return {
 
-      email: '2repby@gmail.com',
-      password: 'password',
+      email: '',
+      password: '',
       items: [
         {
           label: 'Профиль',
@@ -124,6 +126,21 @@ export default {
         function () {
           return this.$store.state.wrongPassword
         },
+    login_as:
+        function () {
+        if (this.$store.state.user) {
+            return this.$store.state.user.email
+          }
+        return false
+        },
+    is_admin:
+      function () {
+        if (this.$store.state.user) {
+          return this.$store.state.user.is_admin
+        } else {
+          return false
+        }
+      }
   },
   methods: {
     login() {

@@ -45,7 +45,7 @@
         </label>
         <div class="p-input-icon-right">
           <i class="pi pi-envelope"/>
-          <InputText id="email" v-model="email" :class="{ 'p-invalid': v$.password.$error }"
+          <InputText id="email" v-model="email" :class="{ 'p-invalid': v$.email.$error }"
                      placeholder="Введите e-mail" type="text"/>
         </div>
       </div>
@@ -84,7 +84,8 @@
 
     <template #footer>
       <Button class="p-button-info" icon="pi pi-times" label="Отмена" @click="closeDialog"/>
-      <Button class="p-button-success" icon="pi pi-check" label="Сохранить" type="submit" @click="saveUser()"/>
+      <Button v-if="this.user_action=='create'" class="p-button-success" icon="pi pi-check" label="Сохранить" type="submit" @click="saveUser()"/>
+      <Button v-if="this.user_action=='edit'" class="p-button-success" icon="pi pi-check" label="Сохранить" type="submit" @click="updateUser()"/>
     </template>
   </Dialog>
 </template>
@@ -99,7 +100,7 @@ import store from "@/state";
 import MultiSelect from "primevue/multiselect";
 import InputMask from 'primevue/inputmask';
 import Password from "primevue/password";
-import {email, required, helpers, minLength} from "@vuelidate/validators";
+import {email, required, helpers, minLength, requiredIf} from "@vuelidate/validators";
 import {useVuelidate} from "@vuelidate/core";
 import {isEmpty} from "lodash/lang";
 // import router from "@/router";
@@ -114,6 +115,7 @@ export default {
   data() {
     return {
       DV: false,
+      id: '',
       firstname: '',
       lastname: '',
       surname: '',
@@ -133,7 +135,8 @@ export default {
         email: helpers.withMessage('Некорректный e-mail', email),
       },
       password: {
-        required: helpers.withMessage('Поле явялется обязательным', required),
+        required: requiredIf(function() {return this.user_action=='create'}),
+        // required: helpers.withMessage('Поле явялется обязательным', required),
         minLength: helpers.withMessage(
             ({
                // $invalid,
@@ -179,11 +182,12 @@ export default {
 
     loadUser(){
       console.log('this.user= ', this.user);
+      this.id = this.user.id;
       this.lastname = this.user.lastname;
       this.firstname = this.user.firstname;
       this.surname = this.user.surname;
       this.email = this.user.email;
-      this.password = this.user.password;
+      // this.password = this.user.password;
       this.phone = this.user.phone;
       this.selectedAreas = this.user.areas.map(e => {
             return {name: e.name, value: e.id}});
@@ -191,11 +195,85 @@ export default {
           console.log('this.selectedAreas= ',  this.selectedAreas);
     },
 
+    async updateUser() {
+      const isFormCorrect = await this.v$.$validate()
+      // you can show some extra alert to the user or just leave the each field to show it's `$errors`.
+      if (!isFormCorrect) return
+      let bodyParameters = {
+        "lastname": this.lastname,
+        "firstname": this.firstname,
+        "surname": this.surname,
+        'email': this.email,
+        'password': this.password,
+        "phone": this.phone,
+      };
+      // const result = store.dispatch('storeMetricValue', bodyParameters);
+      store.dispatch('updateUser', [this.id, bodyParameters]).then(data => {
+        console.log('DATA^ ', data)
+        if (!isEmpty(data.code))
+          this.$toast.add({
+            severity: 'error',
+            summary: 'Ошибка изменения пользователя',
+            detail: data.message,
+            life: 4000
+          });
+        else if (!isEmpty(data.data))
+          this.$toast.add({
+            severity: 'error',
+            summary: 'Ошибка изменения пользователя',
+            detail: {...data.data.errors, error: data.data.message},
+            life: 4000
+          });
+        else {
+          this.$toast.add({severity: 'success', summary: 'Пользователь изменен', detail: data, life: 4000});
+          // Обновление городов
+            const bodyParameters = {
+              "id_areas": this.selectedAreas.map(e => {return e.value}).join(','),
+            };
+            store.dispatch('storeUserAreas', [data.user.id, bodyParameters] ).then(data => {
+              console.log('DATA^ ', data)
+              if (!isEmpty(data.code))
+                this.$toast.add({
+                  severity: 'error',
+                  summary: 'Ошибка обновления городов/районов пользователю',
+                  detail: data.message,
+                  life: 4000
+                });
+              else if (!isEmpty(data.data))
+                this.$toast.add({
+                  severity: 'error',
+                  summary: 'Ошибка обновления городов/районов пользователю',
+                  detail: {...data.data.errors, error: data.data.message},
+                  life: 4000
+                });
+              else{
+                this.$toast.add({
+                  severity: 'success',
+                  summary: 'Города/районы обновлены у уполномоченного пользователю',
+                  detail: data,
+                  life: 4000
+                });
+
+              }
+
+            })
+
+          this.resetForm();
+          this.v$.$reset();
+          this.closeDialog();
+          store.dispatch('getUsers');
+
+        }
+
+      })
+
+    },
+
     async saveUser() {
       const isFormCorrect = await this.v$.$validate()
       // you can show some extra alert to the user or just leave the each field to show it's `$errors`.
       if (!isFormCorrect) return
-      const bodyParameters = {
+      let bodyParameters = {
         "lastname": this.lastname,
         "firstname": this.firstname,
         "surname": this.surname,
