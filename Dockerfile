@@ -19,6 +19,7 @@ COPY ./public ./public
 COPY ./vue.config.js ./vue.config.js
 COPY ./babel.config.js ./babel.config.js
 # собираем приложение для production с минификацией
+ENV NODE_OPTIONS=--openssl-legacy-provider
 RUN npm run build  --max_old_space_size=1024
 EXPOSE 8800
 CMD [ "http-server", "dist", "-p", "8800"]
