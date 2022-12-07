@@ -1,0 +1,38 @@
+stages:
+  - Build
+  - Deploy
+
+build:
+  image: docker:stable
+  services:
+    - docker:dind
+  stage: Build
+  before_script:
+    - docker login $CI_REGISTRY -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "master"'
+  script:
+    - docker build -t $CI_REGISTRY_IMAGE:base .
+    - docker push $CI_REGISTRY_IMAGE:base
+  tags:
+    - student_surgu
+
+deploy:
+  image: ubuntu:latest
+  stage: Deploy
+  before_script:
+    - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
+    - mkdir -p ~/.ssh
+    - eval $(ssh-agent -s)
+    - chmod 700 ~/.ssh
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "master"'
+  script:
+    - pwd
+    - ls -a
+    - ssh-keyscan monitoring.surgut.digital >> ~/.ssh/known_hosts
+    - chmod 644 ~/.ssh/known_hosts
+    - ssh-add  <(echo "$SSH_PRIVATE_KEY" | base64 -d)
+    - ssh osipov@monitoring.surgut.digital "docker system prune -f && docker login $CI_REGISTRY -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD && docker service update --with-registry-auth --image $CI_REGISTRY_IMAGE:$CI_PIPELINE_IID surgu_project_monitor_front"
+
+
