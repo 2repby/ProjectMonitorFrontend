@@ -25,5 +25,5 @@ ENV VUE_APP_CLIENT_ID=TestClient
 ENV VUE_APP_APPNAME=ProjectMonitor
 RUN npm run build  --max_old_space_size=1024
 EXPOSE 8800
-CMD [ "http-server", "--proxy", "http://localhost:8080?", "dist", "-p", "8800"]
+CMD [ "http-server", "--proxy", "https://monitoring.surgut.digital?", "dist", "-p", "8800"]
 
