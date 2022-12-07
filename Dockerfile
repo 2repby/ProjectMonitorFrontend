@@ -17,6 +17,7 @@ RUN npm install -g http-server
 COPY ./src ./src
 COPY ./public ./public
 COPY ./vue.config.js ./vue.config.js
+COPY ./babel.config.js ./babel.config.js
 # собираем приложение для production с минификацией
 RUN npm run build  --max_old_space_size=1024
 EXPOSE 8800
