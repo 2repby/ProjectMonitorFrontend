@@ -267,6 +267,7 @@ export default {
           this.v$.$reset();
           this.closeDialog();
           store.dispatch('getUsers');
+          store.dispatch('getUser');
 
         }
 
@@ -344,6 +345,7 @@ export default {
           this.v$.$reset();
           this.closeDialog();
           store.dispatch('getUsers');
+          store.dispatch('getUser');
 
         }
 

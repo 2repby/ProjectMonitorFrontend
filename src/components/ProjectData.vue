@@ -98,7 +98,7 @@ export default {
   },
   mounted() {
 
-    // store.dispatch('getProjects');
+    store.dispatch('getProjects');
     // ProjectService.getProjects().then(data => this.projects = data)
     // ProjectService.getProjects().then(data => this.metrics = data.filter(e => e.id == this.id).map(e => e.metrics)[0])
     // console.log("CURRENT USER ID=", this.user.id)

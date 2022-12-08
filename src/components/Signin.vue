@@ -28,8 +28,8 @@
         </div>
 
         <div v-else class="flex flex-column md:flex-row ">
-          <InputText v-model="email" class="m-2" v-bind:class="{'p-invalid': wrong_password}" placeholder="e-mail"/>
-          <Password v-model="password" :feedback="false" class="m-2" v-bind:class="{'p-invalid': wrong_password}" placeholder="пароль"/>
+          <InputText v-model="email" class="m-2" v-bind:class="{'p-invalid': wrong_password}" placeholder="E-mail"/>
+          <Password v-model="password" :feedback="false" class="m-2" v-bind:class="{'p-invalid': wrong_password}" placeholder="Пароль"/>
           <Button class="p-button-raised m-2" @click="login">Войти</Button>
         </div>
       </div>
