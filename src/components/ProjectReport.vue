@@ -9,20 +9,20 @@
 
   <Tree :value="this.tree"></Tree>
 
-  <div class="col-12 md:col-6">
-    <div class="card">
-      <div v-for="(item) in metric_values.metrics" :key="item.id" style="margin: 10px">
-      <Accordion>
-        <AccordionTab :header="item.code+'  '+ item.name">
-          <div v-for="(value) in item.metric_values" :key="value.id" style="margin: 10px">
-            <p>{{value.area.name}} - {{periods.filter(element => element.id == value.period_id)[0].name }} - {{value.value}} </p>
-          </div>
-        </AccordionTab>
+<!--  <div class="col-12 md:col-6">-->
+<!--    <div class="card">-->
+<!--      <div v-for="(item) in metric_values.metrics" :key="item.id" style="margin: 10px">-->
+<!--      <Accordion>-->
+<!--        <AccordionTab :header="item.code+'  '+ item.name">-->
+<!--          <div v-for="(value) in item.metric_values" :key="value.id" style="margin: 10px">-->
+<!--            <p>{{value.area.name}} - {{periods.filter(element => element.id == value.period_id)[0].name }} - {{value.value}} </p>-->
+<!--          </div>-->
+<!--        </AccordionTab>-->
 
-      </Accordion>
-      </div>
-    </div>
-  </div>
+<!--      </Accordion>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
 
 
 </template>
@@ -30,8 +30,8 @@
 <script>
 
 
-import Accordion from 'primevue/accordion';
-import AccordionTab from 'primevue/accordiontab';
+// import Accordion from 'primevue/accordion';
+// import AccordionTab from 'primevue/accordiontab';
 import Panel from "primevue/panel";
 // import {groupBy} from "lodash";
 import _ from "lodash";
@@ -41,7 +41,7 @@ import store from "@/state";
 export default {
   props: ['id', 'projectReport'],
   name: "ProjectReport",
-  components: {Accordion, AccordionTab, Panel, Tree},
+  components: {Panel, Tree},
   data() {
     return {
       result: [],

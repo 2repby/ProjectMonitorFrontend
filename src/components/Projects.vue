@@ -19,7 +19,7 @@
           <div class="mx-1 my-1">
             <Button icon="pi pi-chart-line" label="Метрики" class="p-button-outlined" style="width: 100%" @click="viewMetricsDialog(item.name,index)"/>
           </div>
-          <div class="mx-1 my-1">
+          <div class="mx-1 my-1" v-if="is_logged_in">
             <Button icon="pi pi-pencil" label="Ввод данных" class="p-button-outlined" style="width: 100%" @click="viewProjectData(index)"/>
           </div>
           <div class="mx-1 my-1">
@@ -64,7 +64,19 @@ export default {
   computed:{
     projects(){
       return store.state.projects;
-    }
+    },
+    is_logged_in()
+        {
+          return this.$store.state.loggedIn
+        },
+    // is_admin:
+    //     function () {
+    //       if (this.$store.state.user) {
+    //         return this.$store.state.user.is_admin
+    //       } else {
+    //         return false
+    //       }
+    //     }
   },
   // customerService: this.$store.state.projects,
   // created() {

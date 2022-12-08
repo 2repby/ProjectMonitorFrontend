@@ -102,6 +102,8 @@ export default {
     // ProjectService.getProjects().then(data => this.projects = data)
     // ProjectService.getProjects().then(data => this.metrics = data.filter(e => e.id == this.id).map(e => e.metrics)[0])
     console.log("CURRENT USER ID=", this.user.id)
+    // store.dispatch('getUserAreas',this.user.id);
+    // console.log("getUserAreas Dispatched");
   },
   methods: {
     store_value() {
@@ -109,7 +111,7 @@ export default {
         "area_id": this.selectedArea.id,
         "metric_id": this.selectedMetric.id,
         "period_id": this.selectedPeriod.id,
-        "value": this.value,
+        "value": this.value / 100,
       };
       // const result = store.dispatch('storeMetricValue', bodyParameters);
       store.dispatch('storeMetricValue', bodyParameters).then(data => {

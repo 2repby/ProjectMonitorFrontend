@@ -15,9 +15,9 @@
           <Button class="p-button-raised p-button-success" icon="pi pi-users" iconPos="left" label="Пользователи"
                   @click="goLink('/users')"/>
         </div>
-        <div class="flex m-2">
-          <Button class="p-button-raised p-button-success" icon="pi pi-info-circle" iconPos="left" label="Документация"/>
-        </div>
+<!--        <div class="flex m-2">-->
+<!--          <Button class="p-button-raised p-button-success" icon="pi pi-info-circle" iconPos="left" label="Документация"/>-->
+<!--        </div>-->
       </div>
     </template>
 
@@ -28,8 +28,8 @@
         </div>
 
         <div v-else class="flex flex-column md:flex-row ">
-          <InputText v-model="email" class="m-2" v-bind:class="{'p-invalid': wrong_password}"/>
-          <Password v-model="password" :feedback="false" class="m-2" v-bind:class="{'p-invalid': wrong_password}"/>
+          <InputText v-model="email" class="m-2" v-bind:class="{'p-invalid': wrong_password}" placeholder="e-mail"/>
+          <Password v-model="password" :feedback="false" class="m-2" v-bind:class="{'p-invalid': wrong_password}" placeholder="пароль"/>
           <Button class="p-button-raised m-2" @click="login">Войти</Button>
         </div>
       </div>

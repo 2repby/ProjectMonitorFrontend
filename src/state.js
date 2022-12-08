@@ -1,4 +1,5 @@
 import {createStore} from "vuex";
+import router from "@/router";
 // import {error} from "@babel/eslint-parser/lib/convert";
 
 const backendUrl = process.env.VUE_APP_BACKEND_URL;
@@ -147,6 +148,7 @@ const  store = createStore({
                     context.commit('setLoggedIn',false);
                     context.commit('setUser', null);
                     localStorage.removeItem('token');
+                    router.push('/');
                 }
             )
                 .catch((error) => {

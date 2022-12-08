@@ -61,6 +61,7 @@ export default {
 
       store.commit('setToken', token);
       store.dispatch('getUser');
+      // store.dispatch('getUserAreas', this.store.state.user.id);
 
     }
     store.dispatch('getPeriods');
