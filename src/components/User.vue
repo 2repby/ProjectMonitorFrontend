@@ -74,7 +74,7 @@
                    placeholder="Введите номер в формате (XXX)XXX-XX-XX" type="text"/>
       </div>
 
-      <div class="field">
+      <div class="field" v-if="this.user_action!='edit_personal'">
         <label for="areas">Уполномочен от муниципальных образований</label><br>
         <MultiSelect id="areas" v-model="selectedAreas" :options="areas" optionLabel="name"
                      placeholder="Выберите город (район)">
@@ -85,7 +85,7 @@
     <template #footer>
       <Button class="p-button-info" icon="pi pi-times" label="Отмена" @click="closeDialog"/>
       <Button v-if="this.user_action=='create'" class="p-button-success" icon="pi pi-check" label="Сохранить" type="submit" @click="saveUser()"/>
-      <Button v-if="this.user_action=='edit'" class="p-button-success" icon="pi pi-check" label="Сохранить" type="submit" @click="updateUser()"/>
+      <Button v-if="this.user_action=='edit' || this.user_action=='edit_personal'" class="p-button-success" icon="pi pi-check" label="Сохранить" type="submit" @click="updateUser()"/>
     </template>
   </Dialog>
 </template>
@@ -155,7 +155,7 @@ export default {
       this.DV = true;
       console.log('this.user_action= ', this.user_action);
       this.resetForm();
-      if (this.user_action == "edit"){
+      if (this.user_action == "edit" || this.user_action == "edit_personal"){
         this.loadUser();
       }
 
@@ -189,10 +189,11 @@ export default {
       this.email = this.user.email;
       // this.password = this.user.password;
       this.phone = this.user.phone;
-      this.selectedAreas = this.user.areas.map(e => {
-            return {name: e.name, value: e.id}});
-      // this.selectedAreas = [1, 2, 3, 4]
-          console.log('this.selectedAreas= ',  this.selectedAreas);
+      if (this.user_action != "edit_personal"){
+        this.selectedAreas = this.user.areas.map(e => {
+          return {name: e.name, value: e.id}});
+      }
+      console.log('this.selectedAreas= ',  this.selectedAreas);
     },
 
     async updateUser() {
@@ -227,10 +228,14 @@ export default {
         else {
           this.$toast.add({severity: 'success', summary: 'Пользователь изменен', detail: data, life: 4000});
           // Обновление городов
+          if (!isEmpty(this.selectedAreas) & (this.user_action != "edit_personal")) {
+            console.log('Условие обновления городов:   ', this.user_action != "edit_personal")
             const bodyParameters = {
-              "id_areas": this.selectedAreas.map(e => {return e.value}).join(','),
+              "id_areas": this.selectedAreas.map(e => {
+                return e.value
+              }).join(','),
             };
-            store.dispatch('storeUserAreas', [data.user.id, bodyParameters] ).then(data => {
+            store.dispatch('storeUserAreas', [data.user.id, bodyParameters]).then(data => {
               console.log('DATA^ ', data)
               if (!isEmpty(data.code))
                 this.$toast.add({
@@ -246,7 +251,7 @@ export default {
                   detail: {...data.data.errors, error: data.data.message},
                   life: 4000
                 });
-              else{
+              else {
                 this.$toast.add({
                   severity: 'success',
                   summary: 'Города/районы обновлены у уполномоченного пользователю',
@@ -257,7 +262,7 @@ export default {
               }
 
             })
-
+          }
           this.resetForm();
           this.v$.$reset();
           this.closeDialog();
@@ -301,7 +306,9 @@ export default {
           });
         else {
           this.$toast.add({severity: 'success', summary: 'Пользователь добавлен', detail: data, life: 4000});
-          if (!isEmpty(this.selectedAreas)){
+
+          if (!isEmpty(this.selectedAreas) & (this.user_action != "edit_personal")){
+            console.log('Условие обновления городов:   ', this.user_action != "edit_personal")
             const bodyParameters = {
               "id_areas": this.selectedAreas.map(e => {return e.value}).join(','),
             };

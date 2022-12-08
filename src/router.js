@@ -4,6 +4,8 @@ import projects from "@/components/Projects";
 import ProjectReport from "@/components/ProjectReport";
 import ProjectData from "@/components/ProjectData";
 import users from "@/components/Users";
+import PersonalCabinet from "@/components/PersonalCabinet";
+import SupportForm from "@/components/SupportForm";
 
 const routes = [
     {
@@ -17,6 +19,14 @@ const routes = [
     {
         path: '/users',
         component: users,
+    },
+    {
+        path: '/profile',
+        component: PersonalCabinet,
+    },
+    {
+        path: '/support',
+        component: SupportForm,
     },
     {
         path: '/projectreport/:id',

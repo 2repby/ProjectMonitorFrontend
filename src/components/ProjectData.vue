@@ -71,11 +71,11 @@ export default {
     }
   },
   computed: {
-    user() {
-      console.log('user COMPUTED')
-      return store.state.user;
-
-    },
+    // user() {
+    //   console.log('user COMPUTED')
+    //   return store.state.user;
+    //
+    // },
     periods() {
       console.log('periods COMPUTED')
       return store.state.periods;
@@ -89,19 +89,19 @@ export default {
   },
 
   watch: {
-    user: function () {
-      store.dispatch('getUserAreas',this.user.id);
-    },
+    // user: function () {
+    //   store.dispatch('getUserAreas',this.user.id);
+    // },
     projects: function () {
       this.metrics = this.projects.filter(e => e.id == this.id).map(e => e.metrics)[0]
     },
   },
   mounted() {
 
-    store.dispatch('getProjects');
+    // store.dispatch('getProjects');
     // ProjectService.getProjects().then(data => this.projects = data)
     // ProjectService.getProjects().then(data => this.metrics = data.filter(e => e.id == this.id).map(e => e.metrics)[0])
-    console.log("CURRENT USER ID=", this.user.id)
+    // console.log("CURRENT USER ID=", this.user.id)
     // store.dispatch('getUserAreas',this.user.id);
     // console.log("getUserAreas Dispatched");
   },

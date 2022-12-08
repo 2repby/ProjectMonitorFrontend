@@ -35,11 +35,11 @@ export default {
     }
   },
   computed: {
-    // user() {
-    //   return this.$store.state.user;
-    // },
     error() {
       return this.$store.state.networkError
+    },
+    user(){
+      return this.$store.state.user
     }
   },
 
@@ -51,6 +51,11 @@ export default {
         detail: 'Отсуствует сетевое соединение или сервер недоступен',
         life: 4000
       });
+    },
+    user: function () {
+      if (this.user){
+        store.dispatch('getUserAreas',this.user.id);
+      }
     },
   },
 
@@ -67,7 +72,7 @@ export default {
     store.dispatch('getPeriods');
     store.dispatch('getAreas');
     store.dispatch('getProjects');
-  }
+  },
 }
 </script>
 <style>

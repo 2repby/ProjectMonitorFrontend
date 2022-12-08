@@ -93,17 +93,17 @@ export default {
       password: '',
       items: [
         {
-          label: 'Профиль',
+          label: 'Личный кабинет',
           icon: 'pi pi-user',
           command: () => {
-            this.router.push('/profile')
+            this.$router.push('/profile')
           }
         },
         {
           label: 'Поддержка',
           icon: 'pi pi-question-circle',
           command: () => {
-            this.router.push('/login')
+            this.$router.push('/support')
           }
         },
         {
