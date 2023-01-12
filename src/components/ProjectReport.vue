@@ -1,10 +1,10 @@
 <template>
   <Panel>
     <template #header>
-      <h2> {{ this.metric_values.name }}</h2>
+      <h2> {{ project_name }}</h2>
 
     </template>
-    {{ this.metric_values.description }}
+    {{ project_description }}
   </Panel>
 
   <Tree :value="this.tree"></Tree>
@@ -39,7 +39,7 @@ import Tree from "primevue/tree";
 import store from "@/state";
 
 export default {
-  props: ['id', 'projectReport'],
+  props: ['id'],
   name: "ProjectReport",
   components: {Panel, Tree},
   data() {
@@ -49,11 +49,20 @@ export default {
       tree: [],
     }
   },
+
+  mounted() {
+    store.dispatch('getAreas');
+  },
+
   computed:
   {
     areas() {
       console.log('areas COMPUTED')
       return store.state.areas;
+    },
+    metrics() {
+      console.log('metrics COMPUTED')
+      return store.state.metrics;
     },
     periods() {
       console.log('periods COMPUTED')
@@ -61,43 +70,59 @@ export default {
     },
     metric_values(){
       console.log('metric_values COMPUTED')
-      console.log('*************************'),
-          console.log(JSON.stringify(this.metric_values, null, 2)),
-          console.log('**************************')
+      console.log('*************************')
+      console.log(JSON.stringify(this.metric_values, null, 2))
+      console.log('**************************')
       return store.state.metricValues;
-    }
+    },
+    project_name:
+        function () {
+          return this.$store.state.projects.filter(e => e.id == this.$route.params.id)[0].name
+        },
+    project_description:
+        function () {
+          return this.$store.state.projects.filter(e => e.id == this.$route.params.id)[0].description
+        },
   },
 
   watch: {
 
     areas: function () {
-      store.dispatch('getMetricValues',this.id);
+      store.dispatch('getMetrics',this.id);
+    },
 
+    metrics: function (){
+      store.dispatch('getMetricValues',this.id);
     },
 
     metric_values: function () {
-      console.log('***********++++++++++++**************');
-      console.log('ШВВВВВВВВВВВВВВВВВВВ  ',this.id);
+      console.log('metric_values watched для проекта: ',this.id);
+      console.log('--------------metrics:------------------ ');
+      console.log(JSON.stringify(this.metrics, null, 2));
+      console.log('--------------metric_values:------------------ ');
       console.log(JSON.stringify(this.metric_values, null, 2)),
-          console.log('**********+++++++++++++****************')
       // this.tree = Object.keys(this.metric_values.metrics).
       // map(x => JSON.parse('{"key": "'+x+'" , "label": "'+this.metric_values.metrics[x].name+'"}')),
-      this.tree = Object.keys(this.metric_values.metrics).map(x => ({
+      this.tree = Object.keys(this.metric_values).map(x => ({
         key: x,
         icon: "pi pi-fw pi-chart-line",
-        label: this.metric_values.metrics[x].name,
+        label: this.metric_values[x].code + ' ' + this.metric_values[x].name,
         // children: [{key: 0, label: 'test'}]
         children:
-            Object.keys(_.groupBy(this.metric_values.metrics[x].metric_values, (value) => value.area_id)).map((c, key) => ({
+            Object.keys(_.groupBy(this.metric_values[x].metric_values, (value) => value.area_id)).map((c, key) => ({
               key: x + '-' + key,
               area_id: c,
               label: this.areas.filter(element => element.id == c)[0].name,
               icon: "pi pi-fw pi-map-marker",
               children:
-                  this.metric_values.metrics[x].metric_values.filter(element => element.area_id == c).sort((a,b) => {if (a.period_id < b.period_id) {
+                  this.metric_values[x].metric_values.filter(element => element.area_id == c).sort((a,b) => {if (a.period_id < b.period_id) {
                     return -1;}} ).map((y, key2) => ({
                     key: x + '-' + key + '-' + key2,
-                    label: this.periods.filter(e => e.id == y.period_id)[0].name+':  '+Number(y.value * 100).toFixed(2)+' %',
+                    label: this.periods.filter(e => e.id == y.period_id)[0].name + ':  ' +
+                        (this.metric_values[x].is_binary == '0' ?
+                        (this.metric_values[x].is_norma == '1' ? y.value + ' (Является нормирующим значением для других метрик)'
+                        : Number(y.value / y.norma_value * 100).toFixed(2)+' % (Значение: ' + y.value +' Норма: ' + y.norma_value + ')')
+                            : y.value > 0 ? "Да":"Нет"),
                     icon: "pi pi-fw pi-calendar",
                   })),
             })),
@@ -110,20 +135,18 @@ export default {
     },
   },
 
-  mounted() {
-          store.dispatch('getAreas');
-  },
 
-  methods: {
 
-    viewMetricsDialog(name, id) {
-      this.metricsDialogVisible = !this.metricsDialogVisible;
-      this.projectName = name;
-      this.currentProjectID = id;
-      console.log(name, id)
-    },
+  // methods: {
+    // Удалить?
+    // viewMetricsDialog(name, id) {
+    //   this.metricsDialogVisible = !this.metricsDialogVisible;
+    //   this.projectName = name;
+    //   this.currentProjectID = id;
+    //   console.log(name, id)
+    // },
 
-  },
+  // },
 }
 </script>
 <style>

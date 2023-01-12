@@ -6,6 +6,7 @@ import ProjectData from "@/components/ProjectData";
 import users from "@/components/Users";
 import PersonalCabinet from "@/components/PersonalCabinet";
 import SupportForm from "@/components/SupportForm";
+import metrics from "@/components/Metrics";
 
 const routes = [
     {
@@ -15,6 +16,10 @@ const routes = [
     {
         path: '/projects',
         component: projects,
+    },
+    {
+        path: '/metrics/:id',
+        component: metrics,
     },
     {
         path: '/users',
@@ -34,7 +39,7 @@ const routes = [
         props: true
     },
     {
-        path: '/projectdata/:id',
+        path: '/projectdata/:project_id',
         component: ProjectData,
         props: true
     },

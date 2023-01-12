@@ -16,7 +16,7 @@
                 optionLabel="name" placeholder="Выберите отчетный период"/>
     </div>
     <div class="field">
-      <label for="metric">Показатель проекта</label>
+      <label for="metric">Метрика проекта</label>
       <Dropdown id="metric" v-model="selectedMetric" :options="metrics" class="w-full"
                 optionLabel="name" placeholder="Выберите метрику проекта"/>
     </div>
@@ -53,7 +53,7 @@ import {isEmpty} from "lodash/lang";
 
 export default {
   name: "EditData",
-  props: ['id',],
+  props: ['project_id',],
   components: {Dropdown, Button, Slider, InputText, Toast},
   data() {
     return {
@@ -78,7 +78,7 @@ export default {
     // },
     periods() {
       console.log('periods COMPUTED')
-      return store.state.periods;
+      return store.state.periods.filter(e => e.project_id == this.project_id);
     },
     user_areas(){
       return store.state.userAreas;
@@ -93,7 +93,7 @@ export default {
     //   store.dispatch('getUserAreas',this.user.id);
     // },
     projects: function () {
-      this.metrics = this.projects.filter(e => e.id == this.id).map(e => e.metrics)[0]
+      this.metrics = this.projects.filter(e => e.id == this.project_id).map(e => e.metrics)[0]
     },
   },
   mounted() {

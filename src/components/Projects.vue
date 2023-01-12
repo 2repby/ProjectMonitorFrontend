@@ -19,6 +19,9 @@
           <div class="mx-1 my-1">
             <Button icon="pi pi-chart-line" label="Метрики" class="p-button-outlined" style="width: 100%" @click="viewMetricsDialog(item.name,index)"/>
           </div>
+          <div class="mx-1 my-1" v-if="is_admin">
+            <Button icon="pi pi-chart-line" label="Редактор метрик" class="p-button-outlined" style="width: 100%" @click="editMetrics(item.name,item.id)"/>
+          </div>
           <div class="mx-1 my-1" v-if="is_logged_in">
             <Button icon="pi pi-pencil" label="Ввод данных" class="p-button-outlined" style="width: 100%" @click="viewProjectData(index)"/>
           </div>
@@ -43,7 +46,7 @@
 // import ProjectService from '../services/projects';
 import Card from 'primevue/card';
 import Button from "primevue/button";
-import Metrics from "@/components/Metrics";
+import Metrics from "@/components/Metrics_old";
 import router from "@/router";
 import ProjectChart from "@/components/ProjectChart";
 import store from "@/state";
@@ -69,14 +72,14 @@ export default {
         {
           return this.$store.state.loggedIn
         },
-    // is_admin:
-    //     function () {
-    //       if (this.$store.state.user) {
-    //         return this.$store.state.user.is_admin
-    //       } else {
-    //         return false
-    //       }
-    //     }
+    is_admin:
+        function () {
+          if (this.$store.state.user) {
+            return this.$store.state.user.is_admin
+          } else {
+            return false
+          }
+        }
   },
   // customerService: this.$store.state.projects,
   // created() {
@@ -95,6 +98,13 @@ export default {
       this.currentProjectID = id;
       console.log(name, id)
      },
+    editMetrics(name, id) {
+      // this.metricsDialogVisible = !this.metricsDialogVisible;
+      // this.projectName = name;
+      // this.currentProjectID = id;
+      console.log('editMetrics: ', name, id)
+      router.push('/metrics/' + id)
+    },
     viewChartDialog(id, name) {
       this.chartDialogVisible = !this.chartDialogVisible;
       this.currentProjectID = id;
@@ -106,11 +116,9 @@ export default {
       console.log(id, name)
     },
     viewProjectReport(id) {
-        console.log(id);
       router.push('/projectreport/' + this.projects[id].id)
     },
     viewProjectData(id) {
-      console.log(id);
       router.push('/projectdata/' + this.projects[id].id)
     }
   },

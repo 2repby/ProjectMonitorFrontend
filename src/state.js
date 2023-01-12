@@ -17,6 +17,7 @@ const  store = createStore({
         userAreas: [],
         projects: [],
         users: [],
+        metrics: [],
         token: null,
         preLoading: false,
         wrongPassword: false,
@@ -84,6 +85,10 @@ const  store = createStore({
         setUsers(context, data){
             context.users = data
             console.log('users IN THE STORE');
+        },
+        setMetrics(context, data){
+            context.metrics = data
+            console.log('metrics IN THE STORE');
         },
 
 
@@ -351,9 +356,9 @@ const  store = createStore({
         },
         getMetricValues(context, project_id)
         {
-            context.dispatch('getRequest','/project/metricvalues/' + project_id).then(data =>{
+            context.dispatch('getRequest','/metricvalues/' + project_id).then(data =>{
                 store.commit('setMetricValues',data);
-                console.log('getMetricValues DISPATCHED');
+                console.log('getMetricValues DISPATCHED для проекта',project_id);
             })
         },
         getProjects(context)
@@ -413,6 +418,13 @@ const  store = createStore({
                 console.log('deleteUser DISPATCHED',);
                 console.log('RESPONSE:', data);
                 return data;
+            })
+        },
+        getMetrics(context, project_id)
+        {
+            context.dispatch('getRequest','/metrics/' + project_id).then(data =>{
+                store.commit('setMetrics',data);
+                console.log('getMetrics DISPATCHED for project ', project_id);
             })
         },
 
