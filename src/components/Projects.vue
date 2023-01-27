@@ -16,9 +16,7 @@
       </template>
       <template #footer>
         <div class="grid">
-<!--          <div class="mx-1 my-1">-->
-<!--            <Button icon="pi pi-chart-line" label="Метрики" class="p-button-outlined" style="width: 100%" @click="viewMetricsDialog(item.name,index)"/>-->
-<!--          </div>-->
+
 <!--          <div class="mx-1 my-1" v-if="is_admin">-->
           <div class="mx-1 my-1" >
             <Button badge="new" badgeClass="p-badge-danger" icon="pi pi-chart-line" label="Метрики" class="p-button-outlined" style="width: 100%" @click="editMetrics(item.name,item.id)"/>
