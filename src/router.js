@@ -7,6 +7,7 @@ import users from "@/components/Users";
 import PersonalCabinet from "@/components/PersonalCabinet";
 import SupportForm from "@/components/SupportForm";
 import metrics from "@/components/Metrics";
+import UserCabinet from "@/components/UserCabinet";
 
 const routes = [
     {
@@ -41,6 +42,11 @@ const routes = [
     {
         path: '/projectdata/:project_id',
         component: ProjectData,
+        props: true
+    },
+    {
+        path: '/usercabinet',
+        component: UserCabinet,
         props: true
     },
 

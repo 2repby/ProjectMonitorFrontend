@@ -8,7 +8,7 @@
 
 
         <template #end>
-          <Button class="p-button-success mr-2" icon="pi pi-plus" label="Добавить метрику"
+          <Button v-if="is_admin" class="p-button-success mr-2" icon="pi pi-plus" label="Добавить метрику"
                   @click="viewUserDialog()"/>
 
         </template>
@@ -43,7 +43,7 @@
             <span v-html="'<ul>' + data.periods_list + '</ul>'"></span>
           </template>
         </Column>
-        <Column header="Редактировать" style="min-width:8rem">
+        <Column v-if="is_admin" header="Редактировать" style="min-width:8rem">
           <template #body="{data}">
             <Button class="p-button-rounded p-button-success mr-2" icon="pi pi-pencil" @click="editMetric(data)"/>
             <!--          <Button class="p-button-rounded p-button-danger" icon="pi pi-trash" @click="deleteUser($event,data )"/>-->
@@ -79,7 +79,7 @@ export default {
   computed: {
 
     project_name:
-        function () {
+        function () {//return this.$store.state.projects
           return this.$store.state.projects.filter(e => e.id == this.$route.params.id)[0].name
         },
 
@@ -98,6 +98,14 @@ export default {
             }
           })
         },
+    is_admin:
+        function () {
+          if (this.$store.state.user) {
+            return this.$store.state.user.is_admin
+          } else {
+            return false
+          }
+        }
   },
 }
 </script>

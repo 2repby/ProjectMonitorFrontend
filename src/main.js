@@ -16,6 +16,7 @@ import ToastService from 'primevue/toastservice';
 import '@vuelidate/core'
 import '@vuelidate/validators'
 import ConfirmationService from 'primevue/confirmationservice';
+import BadgeDirective from 'primevue/badgedirective';
 
 
 import store from './state.js';
@@ -29,3 +30,4 @@ myApp.use(ToastService);
 myApp.use(PrimeVue, { ripple: true })
 myApp.use(ConfirmationService);
 myApp.mount('#app');
+myApp.directive('badge', BadgeDirective);

@@ -356,7 +356,7 @@ const  store = createStore({
         },
         getMetricValues(context, project_id)
         {
-            context.dispatch('getRequest','/metricvalues/' + project_id).then(data =>{
+            return context.dispatch('getRequest','/metricvalues/' + project_id).then(data =>{
                 store.commit('setMetricValues',data);
                 console.log('getMetricValues DISPATCHED для проекта',project_id);
             })
@@ -422,7 +422,7 @@ const  store = createStore({
         },
         getMetrics(context, project_id)
         {
-            context.dispatch('getRequest','/metrics/' + project_id).then(data =>{
+            return context.dispatch('getRequest','/metrics/' + project_id).then(data =>{
                 store.commit('setMetrics',data);
                 console.log('getMetrics DISPATCHED for project ', project_id);
             })

@@ -16,12 +16,14 @@
       </template>
       <template #footer>
         <div class="grid">
-          <div class="mx-1 my-1">
-            <Button icon="pi pi-chart-line" label="Метрики" class="p-button-outlined" style="width: 100%" @click="viewMetricsDialog(item.name,index)"/>
+<!--          <div class="mx-1 my-1">-->
+<!--            <Button icon="pi pi-chart-line" label="Метрики" class="p-button-outlined" style="width: 100%" @click="viewMetricsDialog(item.name,index)"/>-->
+<!--          </div>-->
+<!--          <div class="mx-1 my-1" v-if="is_admin">-->
+          <div class="mx-1 my-1" >
+            <Button badge="new" badgeClass="p-badge-danger" icon="pi pi-chart-line" label="Метрики" class="p-button-outlined" style="width: 100%" @click="editMetrics(item.name,item.id)"/>
           </div>
-          <div class="mx-1 my-1" v-if="is_admin">
-            <Button icon="pi pi-chart-line" label="Редактор метрик" class="p-button-outlined" style="width: 100%" @click="editMetrics(item.name,item.id)"/>
-          </div>
+
           <div class="mx-1 my-1" v-if="is_logged_in">
             <Button icon="pi pi-pencil" label="Ввод данных" class="p-button-outlined" style="width: 100%" @click="viewProjectData(index)"/>
           </div>
@@ -50,6 +52,8 @@ import Metrics from "@/components/Metrics_old";
 import router from "@/router";
 import ProjectChart from "@/components/ProjectChart";
 import store from "@/state";
+// import Badge from "primevue/badge";
+
 // import projects from "../services/projects";
 
 export default {

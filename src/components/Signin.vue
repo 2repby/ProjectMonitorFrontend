@@ -15,6 +15,10 @@
           <Button class="p-button-raised p-button-success" icon="pi pi-users" iconPos="left" label="Пользователи"
                   @click="goLink('/users')"/>
         </div>
+        <div class="flex m-2" v-if="logged_in">
+          <Button class="p-button-raised p-button-success" icon="pi pi-check-square" iconPos="left" label="Личный кабинет"
+                  @click="goLink('/usercabinet')"/>
+        </div>
 <!--        <div class="flex m-2">-->
 <!--          <Button class="p-button-raised p-button-success" icon="pi pi-info-circle" iconPos="left" label="Документация"/>-->
 <!--        </div>-->
@@ -75,7 +79,7 @@ export default {
       if (loggedIn) this.$toast.add({
         severity: 'success',
         summary: 'Успешная аутентификация',
-        detail: 'Вы успешно вошии в сиситему',
+        detail: 'Вы успешно вошии в систему',
         life: 4000
       });
       if (!loggedIn) this.$toast.add({
